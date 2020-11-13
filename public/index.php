@@ -3,7 +3,6 @@
 include $_SERVER['DOCUMENT_ROOT'] . '/../services/Autoloader.php';
 spl_autoload_register([new services\Autoloader(), 'loadClass']);
 
-$newProduct->renderProduct();
 include_once '../services/dbConfig.php';
 
 $products = new \models\Product($config, 'products');
