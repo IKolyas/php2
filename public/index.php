@@ -1,42 +1,12 @@
 <?php
-include 'Product.php';
-include 'Model.php';
 
-$product1 = new Product(1, 'Phone', 'Nokia', 22000);
-$product1->renderProduct();
+include $_SERVER['DOCUMENT_ROOT'] . '/../services/Autoloader.php';
+spl_autoload_register([new services\Autoloader(), 'loadClass']);
 
-$newProduct = new Model(2, 'Notebook', 'HP', 44000, 'black', 'SQ4344-mG');
-$newProduct->renderProduct();
+include_once '../services/dbConfig.php';
 
+$products = new \models\Product($config, 'products');
 
-//  5. Меняется значение статического свойства в самом классе а не в экземпляре(объекте) класса.
-//class A {
-//    public function foo() {
-//        static $x = 0;
-//        echo ++$x;
-//    }
-//}
-//$a1 = new A();
-//$a2 = new A();
-//$a1->foo(); //1
-//$a2->foo(); //2
-//$a1->foo(); //3
-//$a2->foo(); //4
-
-
-//6. Класс B наследует от А статические свойства(становится зависим от значений свойств А)
-//class A {
-//    public function foo() {
-//        static $x = 0;
-//        echo ++$x;
-//    }
-//}
-//class B extends A {
-//}
-//$a1 = new A();
-//$b1 = new B();
-//$a1->foo(); //1
-//$b1->foo(); //1
-//$a1->foo(); //2
-//$b1->foo(); //2
-
+var_dump($products->getAll());
+var_dump($products->renderAll());
+var_dump($products->renderByID(95));
