@@ -1,17 +1,18 @@
 <?php
 
-namespace models;
+namespace app\models;
 
-use services\DataBase as db;
+use app\interfaces\ModelInterface;
+use app\services\DataBase;
 
 abstract class Model implements ModelInterface
 {
-    protected object $dataBase;
+    public $dataBase;
     protected string $tableName;
 
-    public function __construct(array $config, string $table)
+    public function __construct(string $table)
     {
-        $this->dataBase = new db($config);
+        $this->dataBase = DataBase::getInstance();
         $this->tableName = $table;
     }
 
@@ -23,9 +24,19 @@ abstract class Model implements ModelInterface
 
     public function getById(int $id)
     {
-        $sql = "SELECT * FROM {$this->tableName} WHERE id = {$id}";
-        return $this->dataBase->getOne($sql);
+        $sql = "SELECT * FROM {$this->tableName} WHERE id = :id";
+        return $this->dataBase->getOne($sql, [':id' => $id]);
     }
 
+    public function add(array $params) {
+//        $params = implode(',', $params);
+        $sql = "INSERT INTO {$this->tableName} (product_name, product_description, product_price, product_views, category_id ) VALUES :params";
+        return $this->dataBase->execute($sql, [':params' => $params]);
+    }
+    public function update(int $id, array $params) {
+        $params = implode(',', $params);
+        $sql = "UPDATE {$this->tableName} SET (:params) WHERE id = :id";
+        return $this->dataBase->execute($sql, [':id' => $id, ':params' => $params]);
+    }
 
 }
