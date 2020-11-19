@@ -1,55 +1,66 @@
 <?php
 
 
-namespace services;
+namespace app\services;
 
+use app\traits\SingleTone;
+
+include_once '../config/main.php';
 
 class DataBase
 {
-    static string $host;
-    static string $login;
-    static string $password;
-    static string $db;
-    public function __construct(array $config)
+    use SingleTone;
+
+    public array $config = DB;
+
+    /** @var \PDO */
+    private ?\PDO $connection = null;
+
+
+    protected function getConnection()
     {
-        self::$host = $config['host'];
-        self::$login = $config['login'];
-        self::$password = $config['password'];
-        self::$db = $config['db'];
-
-    }
-
-    static function getConnection()
-    {
-
-        static $connection = null;
-        if (is_null($connection)) {
-            $connection = mysqli_connect(
-                self::$host,
-                self::$login,
-                self::$password,
-                self::$db
+        if (is_null($this->connection)) {
+            $this->connection = new \PDO (
+                $this->buildDsn(),
+                $this->config['login'],
+                $this->config['password']
             );
+            $this->connection->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
+
         }
-
-        return $connection;
+        return $this->connection;
     }
 
-    public function getOne($sql)
+    private function buildDsn()
     {
-        return $this->queryAll($sql)[0];
+        return sprintf('%s:host=%s;dbname=%s;charset=%s',
+            $this->config['driver'],
+            $this->config['host'],
+            $this->config['db'],
+            $this->config['charset']
+        );
     }
 
-    public function queryAll($sql)
+    private function query(string $sql, array $params = [])
     {
-        $result = mysqli_query($this::getConnection(), $sql);
-        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+        $pdoStatement = $this->getConnection()->prepare($sql);
+        $pdoStatement->execute($params);
+        return $pdoStatement;
     }
 
-    public function execute($sql)
+    public function getOne(string $sql, array $params = [])
     {
-        $result = mysqli_query($this::getConnection()(), $sql);
-        return mysqli_affected_rows($this::getConnection());
+        return $this->queryAll($sql, $params)[0];
+    }
+
+    public function queryAll(string $sql, array $params = [])
+    {
+        return $this->query($sql, $params)->fetchAll();
+    }
+
+    public function execute(string $sql, array $params = []): int
+    {
+        return $this->query($sql, $params)->rowCount();
     }
 
 

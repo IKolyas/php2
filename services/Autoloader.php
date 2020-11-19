@@ -1,24 +1,19 @@
 <?php
 
 
-namespace services;
+namespace app\services;
 
 
 class Autoloader
 {
 
-     public $paths = [
-         'models',
-         'services'
-     ];
-
     public function loadClass(string $classname)
     {
-        foreach ($this->paths as $dir) {
-            $filename = $_SERVER['DOCUMENT_ROOT'] . '/../' . str_replace('\\', '/', $classname) . '.php';
-            if (file_exists($filename)) {
-                include_once $filename;
-            }
+        $classname = str_replace('app\\', ROOT_DIR, $classname);
+        $filename = realpath($classname . '.php');
+        if (file_exists($filename)) {
+            include_once $filename;
+            return true;
         }
         return false;
     }
