@@ -28,15 +28,36 @@ abstract class Model implements ModelInterface
         return $this->dataBase->getOne($sql, [':id' => $id]);
     }
 
-    public function add(array $params) {
-//        $params = implode(',', $params);
-        $sql = "INSERT INTO {$this->tableName} (product_name, product_description, product_price, product_views, category_id ) VALUES :params";
-        return $this->dataBase->execute($sql, [':params' => $params]);
+    public function add(array $params)
+    {
+
+        $paramsList = [];
+        $col = [];
+        foreach ($params as $key => $val) {
+            $paramsList[":{$key}"] = $val;
+            $col[] = "`{$key}`";
+        }
+        $paramsValue = implode(',', array_keys($paramsList)) ;
+        $col = implode(',', $col);
+        $sql = "INSERT INTO {$this->tableName} ({$col}) VALUES ({$paramsValue})";
+        return $this->dataBase->execute($sql, $paramsList);
     }
-    public function update(int $id, array $params) {
-        $params = implode(',', $params);
-        $sql = "UPDATE {$this->tableName} SET (:params) WHERE id = :id";
-        return $this->dataBase->execute($sql, [':id' => $id, ':params' => $params]);
+
+    public function update(array $params)
+    {
+        $paramsList = [];
+        $col = [];
+
+        foreach ($params as $key => $val) {
+            $paramsList[":{$key}"] = $val;
+            if ($key!=='id') {
+                $col[] = "`$key`" . '=' . ":{$key}";
+            }
+
+        }
+        $col = implode(', ', $col);
+        $sql = "UPDATE `{$this->tableName}` SET {$col} WHERE `id` = :id";
+        return $this->dataBase->execute($sql, [$paramsList]);
     }
 
 }

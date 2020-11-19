@@ -7,6 +7,7 @@ class Product extends Model
     {
         parent::__construct($table);
     }
+
     public function renderAll()
     {
         $product = $this->getAll();
@@ -34,14 +35,23 @@ class Product extends Model
 
     public function addProduct(string $product_name, string $product_description, int $product_price, int $product_views, int $category_id)
     {
-        $params = [$product_name, $product_description, $product_price, $product_views, $category_id];
+        $params = ['product_name' => $product_name,
+                    'product_description' => $product_description,
+                    'product_price' => $product_price,
+                    'product_views' => $product_views,
+                    'category_id' => $category_id];
         $this->add($params);
     }
 
-    public function updateProduct(int $id, string $product_name, string $product_description, int $product_price, int $product_views,int $category_id)
+    public function updateProduct(int $id, string $product_name, string $product_description, int $product_price, int $product_views)
     {
-        $params = [$product_name, $product_description, $product_price, $product_views, $category_id];
-        $this->update($id, $params);
+        $params = [
+            'id' => $id,
+            'product_name' => $product_name,
+            'product_description' => $product_description,
+            'product_price' => $product_price,
+            'product_views' => $product_views];
+        $this->update($params);
     }
 
 }

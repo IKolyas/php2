@@ -12,9 +12,7 @@ interface ModelInterface
 
     function add(array $params);
 
-    function update(int $id, array $params);
+    function update(array $params);
 
-//    function update(string $params);
-//
 //    function delete(int $id);
 }

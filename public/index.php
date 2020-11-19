@@ -8,9 +8,10 @@ spl_autoload_register([new app\services\Autoloader(), 'loadClass']);
 
 $product = (new app\models\Product('products'));
 $product->addProduct('HPP', 'COLCO', 3000, 30, 1);
+$product->updateProduct(2, 'KKKKK', 'BAD prod', 44555, 23);
+$product->renderByID(2);
 $product->renderAll();
-$product = (new app\models\Product('products'))->renderByID(95);
-$category = (new app\models\Category('category'))->renderAll();
-$orders= (new Order('order'))->renderAll();
-$users = (new app\models\Users('user'))->renderAll();
-//var_dump($product);
+
+//$category = (new app\models\Category('category'))->renderAll();
+//$orders= (new Order('order'))->renderAll();
+//$users = (new app\models\Users('user'))->renderAll();

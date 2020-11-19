@@ -2,6 +2,7 @@
 
 
 namespace app\services;
+
 use app\traits\SingleTone;
 
 include_once '../config/main.php';
@@ -9,6 +10,7 @@ include_once '../config/main.php';
 class DataBase
 {
     use SingleTone;
+
     public array $config = DB;
 
     /** @var \PDO */
@@ -39,12 +41,10 @@ class DataBase
         );
     }
 
-
     private function query(string $sql, array $params = [])
     {
         $pdoStatement = $this->getConnection()->prepare($sql);
         $pdoStatement->execute($params);
-        var_dump($pdoStatement);
         return $pdoStatement;
     }
 
@@ -58,9 +58,8 @@ class DataBase
         return $this->query($sql, $params)->fetchAll();
     }
 
-    public function execute(string $sql, array $params = [])
+    public function execute(string $sql, array $params = []): int
     {
-//        var_dump($params);
         return $this->query($sql, $params)->rowCount();
     }
 
