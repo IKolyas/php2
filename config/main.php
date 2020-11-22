@@ -8,4 +8,5 @@ define('DB', [
     'charset' => 'utf8'
 ]);
 
-define('ROOT_DIR', __DIR__ . '/../');
+define('ROOT_DIR', realpath( __DIR__ . '/../') . '/');
+define('VIEWS_DIR', ROOT_DIR . 'views/');

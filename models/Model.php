@@ -7,57 +7,82 @@ use app\services\DataBase;
 
 abstract class Model implements ModelInterface
 {
-    public $dataBase;
+    protected $dataBase;
     protected string $tableName;
 
-    public function __construct(string $table)
+    public function __construct()
     {
         $this->dataBase = DataBase::getInstance();
-        $this->tableName = $table;
+        $this->tableName = static::getTableName();
     }
 
-    public function getAll()
+    /**
+     * @return mixed
+     */
+    public static function getAll()
     {
-        $sql = "SELECT * FROM {$this->tableName}";
-        return $this->dataBase->queryAll($sql);
+        $tableName = static::getTableName();
+        $sql = "SELECT * FROM {$tableName}";
+        return static::getQuery($sql, []);
     }
 
-    public function getById(int $id)
+    public static function getById(int $id, $col = 'id')
     {
-        $sql = "SELECT * FROM {$this->tableName} WHERE id = :id";
-        return $this->dataBase->getOne($sql, [':id' => $id]);
+        $tableName = static::getTableName();
+        $sql = "SELECT * FROM {$tableName} WHERE {$col} = :id";
+        return static::getQuery($sql, [':id' => $id])[0];
     }
 
-    public function add(array $params)
+    public static function add(array $params)
     {
-
+        $tableName = static::getTableName();
         $paramsList = [];
         $col = [];
         foreach ($params as $key => $val) {
             $paramsList[":{$key}"] = $val;
             $col[] = "`{$key}`";
         }
-        $paramsValue = implode(',', array_keys($paramsList)) ;
+        $paramsValue = implode(',', array_keys($paramsList));
         $col = implode(',', $col);
-        $sql = "INSERT INTO {$this->tableName} ({$col}) VALUES ({$paramsValue})";
-        return $this->dataBase->execute($sql, $paramsList);
+        $sql = "INSERT INTO {$tableName} ({$col}) VALUES ({$paramsValue})";
+        static::save($sql, $paramsList);
+
     }
 
-    public function update(array $params)
+    public static function update(array $params)
     {
+        $tableName = static::getTableName();
         $paramsList = [];
         $col = [];
-
         foreach ($params as $key => $val) {
             $paramsList[":{$key}"] = $val;
-            if ($key!=='id') {
+            if ($key !== 'id') {
                 $col[] = "`$key`" . '=' . ":{$key}";
             }
-
         }
         $col = implode(', ', $col);
-        $sql = "UPDATE `{$this->tableName}` SET {$col} WHERE `id` = :id";
-        return $this->dataBase->execute($sql, [$paramsList]);
+        $sql = "UPDATE {$tableName} SET {$col} WHERE id = :id";
+        static::save($sql, $paramsList);
     }
+
+    public static function delete(int $id)
+    {
+        // TODO: Implement delete() method.
+        $tableName = static::getTableName();
+        $sql = "DELETE FROM {$tableName} WHERE id = :id";
+        static::save($sql, [':id' => $id]);
+    }
+
+    public static function save(string $sql, array $params = [])
+    {
+        // TODO: Implement save() method.
+        return DataBase::getInstance()->execute($sql, $params);
+    }
+
+    protected static function getQuery($sql, $params = [])
+    {
+        return DataBase::getInstance()->queryAll($sql, $params, get_called_class());
+    }
+
 
 }

@@ -1,19 +1,21 @@
 <?php
 
+
 namespace app\models;
-class Product extends Model
+
+
+class Basket extends Model
 {
-
     public int $id;
+    public int $product_id;
     public string $product_name;
-    public string $product_description;
     public int $product_price;
-    public int $category_id;
-
+    public int $quantity;
+    public int $sum;
     public static function getTableName(): string
-    {
-        return "products";
-    }
 
+    {
+        return "basket";
+    }
 
 }

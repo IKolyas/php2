@@ -7,7 +7,7 @@ namespace app\services;
 class Autoloader
 {
 
-    public function loadClass(string $classname)
+    public function loadClass(string $classname) : bool
     {
         $classname = str_replace('app\\', ROOT_DIR, $classname);
         $filename = realpath($classname . '.php');
