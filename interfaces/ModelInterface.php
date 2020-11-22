@@ -6,13 +6,18 @@ namespace app\interfaces;
 
 interface ModelInterface
 {
-    function getAll();
 
-    function getById(int $id);
+    static function getTableName() : string;
 
-    function add(array $params);
+    static function getAll();
 
-    function update(array $params);
+    static function getById(int $id);
 
-//    function delete(int $id);
+    static function add(array $params);
+
+    static function update(array $params);
+
+    static function delete(int $id);
+
+    static function save(string $sql, array $params);
 }
