@@ -18,9 +18,10 @@ class BasketController extends Controller
     public function actionAdd()
     {
         $params = post('params');
-        $basketProduct = Basket::getById($params['id'], 'product_id');
+
+        $basketProduct = Basket::getBy($params['id'], 'product_id');
         if (is_null($basketProduct)) {
-            $getProduct = Product::getById($params['id']);
+            $getProduct = Product::getBy($params['id']);
             $params = [
                 'product_id' => $getProduct->id,
                 'product_name' => $getProduct->product_name,
