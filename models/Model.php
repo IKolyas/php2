@@ -26,11 +26,11 @@ abstract class Model implements ModelInterface
         return static::getQuery($sql, []);
     }
 
-    public static function getById(int $id, $col = 'id')
+    public static function getBy($val, $col = 'id')
     {
         $tableName = static::getTableName();
-        $sql = "SELECT * FROM {$tableName} WHERE {$col} = :id";
-        return static::getQuery($sql, [':id' => $id])[0];
+        $sql = "SELECT * FROM {$tableName} WHERE {$col} = :val";
+        return static::getQuery($sql, [':val' => $val])[0];
     }
 
     public static function add(array $params)

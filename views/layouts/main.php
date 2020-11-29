@@ -28,7 +28,7 @@
                     <a class="nav-link" href="/?c=basket&a=get">BASKET</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Pricing</a>
+                    <a class="nav-link" href="/?c=user&a=login">Authentication</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>

@@ -18,6 +18,7 @@
             <tbody>
             <?php
             $index = 1;
+
             /** @var \app\models\Basket $model */
             foreach ($model as $item): ?>
             <tr>
@@ -32,7 +33,7 @@
                         <input type="submit" class="btn btn-secondary" value="применить">
                     </form>
                 </td>
-                <td><?=$item->sum?></td>
+                <td><?=$item->product_quantity * $item->product_price?></td>
                 <td>
                     <form action="/?c=basket&a=delete" method="post">
                         <input type="hidden" name="id" value="<?=$item->id?>">

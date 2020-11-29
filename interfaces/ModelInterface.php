@@ -11,7 +11,7 @@ interface ModelInterface
 
     static function getAll();
 
-    static function getById(int $id);
+    static function getBy(int $id);
 
     static function add(array $params);
 
