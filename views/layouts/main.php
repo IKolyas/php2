@@ -22,13 +22,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" href="/?c=product&a=catalog">Home<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/product/catalog">Home<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/?c=basket&a=get">BASKET</a>
+                    <a class="nav-link" href="/basket/get">BASKET</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/?c=user&a=login">Authentication</a>
+                    <a class="nav-link" href="/user/login">Authentication</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>

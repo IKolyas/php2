@@ -10,7 +10,7 @@
         <li class="list-group-item">cat ID: <?= $model->category_id ?></li>
         <li class="list-group-item">Price: <?= $model->product_price ?></li>
     </ul>
-    <form action="/?c=basket&a=add" method="post">
+    <form action="/basket/add" method="post">
         <input type="hidden" name="params[id]" value="<?= $model->id ?>">
         <input type="hidden" name="params[quantity]" value="1">
         <input type="submit" value="добавить в корзину">

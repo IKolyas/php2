@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-center align-item-center">
-    <form action="/?c=user&a=authentication" method="post">
+    <form action="/user/authentication" method="post">
         <div class="form-group">
             <label for="exampleInputEmail1">Login</label>
             <input type="text" class="form-control" name="auth[login]" id="exampleInputEmail1">

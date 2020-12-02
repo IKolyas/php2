@@ -8,7 +8,7 @@ foreach ($model as $item): ?>
         <p class="card-text">ID: <?=$item->id?></p>
         <p class="card-text">cat ID: <?=$item->category_id?></p>
         <p class="card-text">Price: <?=$item->product_price?></p>
-        <a href="/?c=product&a=card&id=<?=$item->id?>" class="btn btn-primary">buy</a>
+        <a href="/product/card?id=<?=$item->id?>" class="btn btn-primary">buy</a>
     </div>
 </div>
 <?php endforeach; ?>

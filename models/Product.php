@@ -10,10 +10,4 @@ class Product extends Model
     public int $product_price;
     public int $category_id;
 
-    public static function getTableName(): string
-    {
-        return "products";
-    }
-
-
 }
