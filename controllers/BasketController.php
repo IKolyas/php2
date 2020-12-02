@@ -4,24 +4,37 @@
 namespace app\controllers;
 
 
-use app\models\Basket;
-use app\models\Product;
+
+use app\base\Request;
+use app\models\repositories\BasketRepository;
+use app\models\repositories\ProductRepository;
 
 class BasketController extends Controller
 {
+    protected object $basket;
+    protected object $product;
+    protected object $request;
+
+    public function __construct()
+    {
+        $this->basket = (new BasketRepository());
+        $this->product = (new ProductRepository());
+        $this->request =(new Request());
+    }
+
     public function actionGet()
     {
-        $model = Basket::getAll();
+        $model = $this->basket->getAll();
         echo $this->render('productBasket', ['model' => $model]);
     }
 
     public function actionAdd()
     {
-        $params = post('params');
+        $params = $this->request->req('params');
 
-        $basketProduct = Basket::getBy($params['id'], 'product_id');
+        $basketProduct = $this->basket->getBy($params['id'], 'product_id');
         if (is_null($basketProduct)) {
-            $getProduct = Product::getBy($params['id']);
+            $getProduct = $this->product->getBy($params['id']);
             $params = [
                 'product_id' => $getProduct->id,
                 'product_name' => $getProduct->product_name,
@@ -29,29 +42,29 @@ class BasketController extends Controller
                 'product_quantity' => $params['quantity'],
             ];
 
-            Basket::add($params);
+            $this->basket->add($params);
         } else {
             $params = [
                 'id' => $basketProduct->id,
                 'product_quantity' => $basketProduct->product_quantity + 1,
             ];
-            Basket::update($params);
+            $this->basket->update($params);
         }
 
-        static::actionGet();
+        $this->actionGet();
     }
 
     public function actionDelete()
     {
-        $productId = post('id');
-        Basket::delete($productId);
-        static::actionGet();
+        $product = $this->request->req('id');
+        $this->basket->delete($product);
+        $this->actionGet();
     }
 
     public function actionUpdate()
     {
-        $params = post('params');
-        Basket::update($params);
-        static::actionGet();
+        $params = $this->request->req('params');
+        $this->basket->update($params);
+        $this->actionGet();
     }
 }

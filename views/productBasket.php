@@ -27,7 +27,7 @@
                 <td><?=$item->product_name?></td>
                 <td><?=$item->product_price?></td>
                 <td>
-                    <form action="/?c=basket&a=update" method="post">
+                    <form action="/basket/update" method="post">
                         <input type="hidden" name="params[id]" value="<?=$item->id?>">
                         <input type="number" name="params[product_quantity]" value="<?=$item->product_quantity?>">
                         <input type="submit" class="btn btn-secondary" value="применить">
@@ -35,7 +35,7 @@
                 </td>
                 <td><?=$item->product_quantity * $item->product_price?></td>
                 <td>
-                    <form action="/?c=basket&a=delete" method="post">
+                    <form action="/basket/delete" method="post">
                         <input type="hidden" name="id" value="<?=$item->id?>">
                         <input type="submit" class="btn btn-danger" value="удалить">
                     </form>

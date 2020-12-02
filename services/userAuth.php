@@ -1,11 +1,11 @@
 <?php
 
-use app\models\User;
+use app\models\repositories\UserRepository;
 
 function userAuth(array $request)
 {
     $userLogin = $request['login'];
-    $user = User::getBy($userLogin, 'login');
+    $user = (new UserRepository())->getBy($userLogin, 'login');
 
     if (isset($user) && $request['password'] === $user->password) {
         return $user;
