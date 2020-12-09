@@ -3,6 +3,7 @@
 
 namespace app\controllers;
 
+use app\interfaces\RenderInterface;
 
 abstract class Controller
 {
@@ -11,23 +12,30 @@ abstract class Controller
     protected $action;
     protected bool $useLayout = true;
     protected string $layout = 'main';
+    protected object $renderer;
+
+    public function __construct(RenderInterface $renderer)
+    {
+        $this->renderer = $renderer;
+    }
 
     public function runAction($action = null)
     {
         $this->action = $action ?: $this->defaultAction;
         $method = "action" . ucfirst($this->action);
 
-        if(method_exists($this, $method)) {
+        if (method_exists($this, $method)) {
             $this->$method();
         } else {
-            echo "404 Страница не найдена!";
+            throw new \ErrorException('not Method');
         }
     }
 
-    protected function render($template, $params = []) {
-        $content = $this->renderTemplate($template, $params);
-        if($this->useLayout) {
-            return $this->renderTemplate(
+    protected function render($template, $params = [])
+    {
+        $content = $this->renderer->render($template, $params);
+        if ($this->useLayout) {
+            return $this->renderer->render(
                 "layouts/{$this->layout}",
                 ['content' => $content]
             );
@@ -35,12 +43,4 @@ abstract class Controller
         return $content;
     }
 
-    protected function renderTemplate($template, $params = []) {
-        ob_start();
-        $templatePath = VIEWS_DIR . $template . ".php";
-        extract($params);
-
-        include $templatePath;
-        return ob_get_clean();
-    }
 }

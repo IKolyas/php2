@@ -1,21 +1,18 @@
 <?php
-
-
 namespace app\services;
-
 
 class Autoloader
 {
+    private $fileExtension = '.php';
 
-    public function loadClass(string $classname) : bool
+    public function loadClass(string $classname)
     {
         $classname = str_replace('app\\', ROOT_DIR, $classname);
-        $filename = realpath($classname . '.php');
+        $filename = realpath($classname . $this->fileExtension);
         if (file_exists($filename)) {
-            include_once $filename;
+            require $filename;
             return true;
         }
         return false;
     }
-
 }

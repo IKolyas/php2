@@ -18,10 +18,4 @@ class ProductRepository extends Repository
         return Product::class;
     }
 
-    public function getByCategoryId(int $categoryId)
-    {
-        $table = $this->getTableName();
-        $sql = "SELECT * FROM {$table} WHERE category_id = :id";
-        return $this->getQuery($sql, [':id' => $categoryId]);
-    }
 }

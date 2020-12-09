@@ -11,10 +11,22 @@ class DataBase
 {
     use SingleTone;
 
-    public array $config = DB;
+    public $config;
 
     /** @var \PDO */
     private ?\PDO $connection = null;
+
+    public function __construct()
+    {
+        $this->config = [
+            'driver' => 'mysql',
+            'host' => 'localhost',
+            'login' => 'root',
+            'password' => 'root',
+            'database' => 'products',
+            'charset' => 'utf8'
+        ];
+    }
 
 
     protected function getConnection()
@@ -36,7 +48,7 @@ class DataBase
         return sprintf('%s:host=%s;dbname=%s;charset=%s',
             $this->config['driver'],
             $this->config['host'],
-            $this->config['db'],
+            $this->config['database'],
             $this->config['charset']
         );
     }

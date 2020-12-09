@@ -11,8 +11,8 @@ trait SingleTone
 
     public static function getInstance()
     {
-        if (is_null(self::$instance)) {
-            self::$instance = new static();
+        if (is_null(static::$instance)) {
+            static::$instance = new static();
         }
         return static::$instance;
     }
