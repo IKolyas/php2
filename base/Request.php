@@ -9,9 +9,6 @@ class Request
     protected string $requestString = '';
     protected $controllerName = null;
     protected $actionName = null;
-    protected bool $isPost = false;
-    protected bool $isGet = true;
-    protected bool $isAjax = false;
     protected string $urlPattern = "#(?P<controller>\w+)[/]?(?P<action>\w+)?[/]?[?]?(?P<get>.*)#ui";
 
     public function __construct()

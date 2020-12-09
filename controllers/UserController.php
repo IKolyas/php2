@@ -6,14 +6,11 @@ namespace app\controllers;
 require_once '../vendor/autoload.php';
 
 
-use app\base\Request;
-use app\controllers\ProductController;
-use app\models\repositories\SessionUser;
-use app\models\User;
+use app\base\Application;
+use app\services\Path;
 
 class UserController extends Controller
 {
-
 
     public function actionLogin()
     {
@@ -22,37 +19,37 @@ class UserController extends Controller
 
     public function actionAccount()
     {
-        $user = (new SessionUser)->session();
-        var_dump($user);
-        echo $this->render('userAccount', ['user' => $user]);
+        $user = Application::getInstance()->session->get('user');
+        $productsList = Application::getInstance()->product->getAll();
+        echo $this->render('userAccount', [
+                'user' => $user,
+                'products' => $productsList
+            ]
+        );
     }
 
     public function actionAuthentication()
     {
-        $auth = (new SessionUser())->segInUser();
-        var_dump($auth);
-        if ($auth) {
-            var_dump($auth);
-            $this->actionAccount();
+        $req = Application::getInstance()->request->req('auth');
+        $userLogin = $req['login'];
+        $userPassword = $req['password'];
+        $userDB = Application::getInstance()->users->getBy($userLogin, 'login');
+        if (isset($userDB) && $userDB->password == $userPassword) {
+            $sessionUser = [
+                'id' => $userDB->id,
+                'login' => $userDB->login,
+            ];
+            Application::getInstance()->session->set('user', $sessionUser);
+            (new Path())->redirect('/user/account');
+        } else {
+            echo 'Error login or password';
         }
-//        $request = (new Request())->req('auth');
-//        if ($user = userAuth($request)) {
-//            if (!isset($_SESSION['user'])) {
-//                $_SESSION['user'] = [
-//                    'id' => $user->id,
-//                    'username' => $user->login,
-//                ];
-//            }
-//            $this->actionAccount();
-//        };
 
     }
 
     public function actionOut()
     {
-        $userOut = (new SessionUser())->segInUser();
-        if ($userOut) {
-            (new ProductController())->actionCatalog();
-        }
+        Application::getInstance()->session->delete('user');
+        (new Path())->redirect('/product/catalog');
     }
 }

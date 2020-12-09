@@ -3,29 +3,35 @@
 
 namespace app\controllers;
 
-use app\base\Request;
-use app\models\repositories\ProductRepository;
+use app\base\Application;
+use app\services\Path;
 
 class ProductController extends Controller
 {
-    protected object $product;
-
-    public function __construct()
-    {
-        $this->product = (new ProductRepository());
-    }
-
     public function actionCatalog()
     {
-        $model = $this->product->getAll();
+        $model = Application::getInstance()->product->getAll();
         echo $this->render('productCatalog', ['model' => $model]);
     }
 
     public function actionCard()
     {
-        $id = (new Request())->req('id');
-        $model = $this->product->getBy($id);
+        $id = Application::getInstance()->request->req('id');
+        $model = Application::getInstance()->product->getBy($id);
         echo $this->render('productCard', ['model' => $model]);
     }
 
+    public function actionAdd()
+    {
+        $product = Application::getInstance()->request->req('product');
+        Application::getInstance()->product->add($product);
+        (new Path())->redirect('/user/account');
+    }
+
+    public function actionDelete()
+    {
+        $product = Application::getInstance()->request->req('product_id');
+        Application::getInstance()->product->delete($product);
+        (new Path())->redirect('/user/account');
+    }
 }

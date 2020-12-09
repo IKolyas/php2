@@ -4,6 +4,8 @@
 namespace app\models\repositories;
 
 
+use app\base\Application;
+use app\models\Model;
 use app\services\DataBase;
 
 abstract class Repository
@@ -13,7 +15,7 @@ abstract class Repository
 
     public function __construct()
     {
-        $this->dataBase = DataBase::getInstance();
+        $this->dataBase = Application::getInstance()->db;
         $this->tableName = $this->getTableName();
     }
 
@@ -22,7 +24,7 @@ abstract class Repository
      */
     public function getAll(): array
     {
-        $tableName = static::getTableName();
+        $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName}";
         return $this->getQuery($sql, []);
     }
@@ -77,12 +79,12 @@ abstract class Repository
     public function save(string $sql, array $params = [])
     {
         // TODO: Implement save() method.
-        return DataBase::getInstance()->execute($sql, $params);
+        return Application::getInstance()->db->execute($sql, $params);
     }
 
     protected function getQuery($sql, $params = [])
     {
-        return DataBase::getInstance()->queryAll($sql, $params, get_called_class());
+        return Application::getInstance()->db->queryAll($sql, $params, $this->getModelClassName());
     }
 
     abstract public function getTableName(): string;

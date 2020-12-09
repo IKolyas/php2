@@ -4,10 +4,13 @@
 namespace app\models\repositories;
 
 
+use app\base\Application;
+use app\base\Request;
 use app\models\User;
 
-class UserRepository extends  Repository
+class UserRepository extends Repository
 {
+
 
     public function getTableName(): string
     {
