@@ -10,6 +10,7 @@ class ProductController extends Controller
 {
     public function actionCatalog()
     {
+        $this->useLayout = false;
         $model = Application::getInstance()->product->getAll();
         echo $this->render('productCatalog', ['model' => $model]);
     }

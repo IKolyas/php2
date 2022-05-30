@@ -4,6 +4,7 @@
 namespace app\services;
 
 use app\traits\SingleTone;
+use PDO;
 
 include_once '../config/main.php';
 
@@ -13,17 +14,16 @@ class DataBase
 
     public $config;
 
-    /** @var \PDO */
-    private ?\PDO $connection = null;
+    private $connection = null;
 
     public function __construct()
     {
         $this->config = [
-            'driver' => 'mysql',
-            'host' => 'localhost',
-            'login' => 'root',
-            'password' => 'root',
-            'database' => 'products',
+            'db_driver' => 'mysql',
+            'host' => 'db_server',
+            'login' => 'van4ik',
+            'password' => 'password',
+            'database' => 'education_site_db',
             'charset' => 'utf8'
         ];
     }
@@ -32,12 +32,12 @@ class DataBase
     protected function getConnection()
     {
         if (is_null($this->connection)) {
-            $this->connection = new \PDO (
+            $this->connection = new PDO (
                 $this->buildDsn(),
                 $this->config['login'],
                 $this->config['password']
             );
-            $this->connection->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
+            $this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
         }
         return $this->connection;
@@ -46,7 +46,7 @@ class DataBase
     private function buildDsn()
     {
         return sprintf('%s:host=%s;dbname=%s;charset=%s',
-            $this->config['driver'],
+            $this->config['db_driver'],
             $this->config['host'],
             $this->config['database'],
             $this->config['charset']

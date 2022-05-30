@@ -49,7 +49,9 @@ class Application
 
     public function __get($name)
     {
-        if (is_null($this->components[$name])) {
+
+        if (!isset($this->components[$name])) {
+
             if ($params = $this->config['components'][$name]) {
                 $this->components[$name] = $this->componentsFactory
                     ->createComponent($name, $params);
