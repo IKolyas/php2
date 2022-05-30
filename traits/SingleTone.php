@@ -16,19 +16,4 @@ trait SingleTone
         }
         return static::$instance;
     }
-
-    protected function __construct()
-    {
-    }
-
-    protected function __clone()
-    {
-        // TODO: Implement __clone() method.
-    }
-
-    protected function __wakeup()
-    {
-        // TODO: Implement __wakeup() method.
-    }
-
 }

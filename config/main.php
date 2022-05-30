@@ -18,11 +18,11 @@ return [
         ],
         'db' => [
             'class' => \app\services\DataBase::class,
-            'driver' => 'mysql',
-            'host' => 'localhost',
-            'login' => 'root',
-            'password' => 'root',
-            'database' => 'php2020',
+            'db_driver' => 'mysql',
+            'host' => '127.0.0.1',
+            'login' => 'van4ik',
+            'password' => 'password',
+            'database' => 'education_site_db',
             'charset' => 'utf8'
         ],
         'product' => [
